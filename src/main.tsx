@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Inicio from "./pages/Inicio";
@@ -8,13 +7,14 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
 import PrivateRoute from "./PrivateRoute";
+import { HashRouter, Routes, Route } from "react-router-dom"; // 🔹 Quité la duplicación de HashRouter
 
 const rootElement = document.getElementById("root");
 
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <BrowserRouter>
+      <HashRouter>
         <ToastContainer position="top-right" autoClose={3000} />
         <Routes>
           <Route path="/" element={<Register />} />
@@ -26,7 +26,7 @@ if (rootElement) {
             <Route path="/inicio" element={<Inicio />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </React.StrictMode>
   );
 } else {
