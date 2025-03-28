@@ -3,10 +3,11 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Inicio from "./pages/Inicio";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
-import Inicio from "./pages/Inicio";
+import PrivateRoute from "./PrivateRoute";
 
 const rootElement = document.getElementById("root");
 
@@ -19,7 +20,11 @@ if (rootElement) {
           <Route path="/" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/inicio" element={<Inicio />} />
+          
+          {/* Rutas protegidas */}
+          <Route element={<PrivateRoute />}>
+            <Route path="/inicio" element={<Inicio />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </React.StrictMode>

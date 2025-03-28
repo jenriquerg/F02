@@ -19,8 +19,13 @@ const Register = () => {
   const [jwtToken, setJwtToken] = useState("");
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,11 +36,17 @@ const Register = () => {
     e.preventDefault();
     setError("");
     try {
-      const response = await axios.post("http://localhost:5001/api/register", formData);
+      console.log(formData);
+      const response = await axios.post(
+        "https://ej02.onrender.com/api/register",
+        formData
+      );
       setQrCode(response.data.secret);
       setStep(2);
     } catch (err) {
-      setError("Error en el registro. Verifica los datos e inténtalo de nuevo.");
+      setError(
+        "Error en el registro. Verifica los datos e inténtalo de nuevo."
+      );
       console.error(err);
     }
   };
@@ -43,7 +54,7 @@ const Register = () => {
   const handleVerifyOtp = async () => {
     setError("");
     try {
-      const response = await axios.post("http://localhost:5001/api/login", {
+      const response = await axios.post("https://ej02.onrender.com/api/login", {
         email: formData.email,
         token: otp,
       });
@@ -59,33 +70,83 @@ const Register = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 vw-100 bg-dark">
-      <div className="container w-50">
+      <div className="container w-25">
         {step === 1 && (
-          <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm bg-white">
+          <form
+            onSubmit={handleSubmit}
+            className="p-4 border rounded shadow-sm bg-white"
+          >
             <h2 className="mb-4 text-center">Registro</h2>
             {error && <div className="alert alert-danger">{error}</div>}
             <div className="mb-3">
               <label className="form-label">Email</label>
-              <input type="email" name="email" className="form-control" value={formData.email} onChange={handleChange} required />
+              <input
+                type="email"
+                name="email"
+                className="form-control"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="mb-3">
               <label className="form-label">Nombre de usuario</label>
-              <input type="text" name="username" className="form-control" value={formData.username} onChange={handleChange} required />
+              <input
+                type="text"
+                name="username"
+                className="form-control"
+                value={formData.username}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="mb-3">
               <label className="form-label">Contraseña</label>
-              <input type="password" name="password" className="form-control" value={formData.password} onChange={handleChange} required />
+              <input
+                type="password"
+                name="password"
+                className="form-control"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="mb-3">
               <label className="form-label">Grado</label>
-              <input type="text" name="grado" className="form-control" value={formData.grado} onChange={handleChange} required />
+              <select
+                className="form-select"
+                name="grado"
+                value={formData.grado}
+                onChange={handleChange}
+                required
+              >
+                <option value="" disabled>
+                  Seleccione un grado
+                </option>
+                <option value="Ing.">Ingeniero/a</option>
+                <option value="T.S.U.">Técnico Superior Universitario</option>
+                <option value="Prof.">Profesor/a</option>
+                <option value="Lic.">Licenciado/a</option>
+              </select>
             </div>
+
             <div className="mb-3">
               <label className="form-label">Grupo</label>
-              <input type="text" name="grupo" className="form-control" value={formData.grupo} onChange={handleChange} required />
+              <input
+                type="text"
+                name="grupo"
+                className="form-control"
+                value={formData.grupo}
+                onChange={handleChange}
+                required
+              />
             </div>
-            <button type="submit" className="btn btn-primary w-100">Registrarse</button>
-            <a href="/login" className="btn btn-link w-100">Ya tengo una cuenta, quiero iniciar sesión</a>
+            <button type="submit" className="btn btn-primary w-100">
+              Registrarse
+            </button>
+            <a href="/login" className="btn btn-link w-100">
+              Ya tengo una cuenta, quiero iniciar sesión
+            </a>
           </form>
         )}
 
@@ -93,8 +154,13 @@ const Register = () => {
           <div className="text-center p-4 border rounded shadow-sm bg-white">
             <h2 className="mb-4">Escanea este código QR</h2>
             <QRCodeCanvas value={qrCode} size={200} />
-            <p className="mt-3">Usa una aplicación como Google Authenticator o Authy para escanear el código.</p>
-            <button onClick={() => setStep(3)} className="btn btn-primary mt-3">Verificar OTP</button>
+            <p className="mt-3">
+              Usa una aplicación como Google Authenticator o Authy para escanear
+              el código.
+            </p>
+            <button onClick={() => setStep(3)} className="btn btn-primary mt-3">
+              Verificar OTP
+            </button>
           </div>
         )}
 
@@ -102,8 +168,17 @@ const Register = () => {
           <div className="text-center p-4 border rounded shadow-sm bg-white">
             <h2 className="mb-4">Verificar OTP</h2>
             {error && <div className="alert alert-danger">{error}</div>}
-            <input type="text" className="form-control mb-3 text-center" placeholder="Ingrese el código OTP" value={otp} onChange={handleOtpChange} required />
-            <button onClick={handleVerifyOtp} className="btn btn-success w-100">Validar OTP</button>
+            <input
+              type="text"
+              className="form-control mb-3 text-center"
+              placeholder="Ingrese el código OTP"
+              value={otp}
+              onChange={handleOtpChange}
+              required
+            />
+            <button onClick={handleVerifyOtp} className="btn btn-success w-100">
+              Validar OTP
+            </button>
           </div>
         )}
 
@@ -111,8 +186,12 @@ const Register = () => {
           <div className="text-center p-4 border rounded shadow-sm bg-white">
             <h2 className="mb-4">¡Registro completado!</h2>
             <p className="mt-3">Tu autenticación fue exitosa.</p>
-            <p><strong>Token JWT:</strong> {jwtToken}</p>
-            <a href="/" className="btn btn-primary w-100">Ir al inicio</a>
+            <p>
+              <strong>Token JWT:</strong> {jwtToken}
+            </p>
+            <a href="/" className="btn btn-primary w-100">
+              Ir al inicio
+            </a>
           </div>
         )}
       </div>

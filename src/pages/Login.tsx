@@ -55,7 +55,7 @@ const Login = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 vw-100 bg-dark">
-      <div className="container w-50">
+      <div className="container w-25">
         <form onSubmit={handleLoginSubmit} className="p-4 border rounded shadow-sm bg-white">
           <h2 className="mb-4 text-center">Iniciar sesión</h2>
           {error && <div className="alert alert-danger">{error}</div>}
