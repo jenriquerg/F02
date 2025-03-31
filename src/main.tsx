@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Logs from "./pages/Logs";
 import Inicio from "./pages/Inicio";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,6 +24,7 @@ if (rootElement) {
           
           {/* Rutas protegidas */}
           <Route element={<PrivateRoute />}>
+            <Route path="/logs" element={<Logs />} />
             <Route path="/inicio" element={<Inicio />} />
           </Route>
         </Routes>
