@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend, Title} from "chart.js";
@@ -43,6 +44,8 @@ const Inicio = () => {
   const [logData1, setLogData1] = useState<LogEntry[]>([]);
   const [logData2, setLogData2] = useState<LogEntry[]>([]);
 
+  const navigate = useNavigate();
+
   // Obtener los datos de la API una sola vez al montar el componente
   const getData = useCallback(async () => {
     try {
@@ -50,7 +53,7 @@ const Inicio = () => {
         "https://ej02.onrender.com/api/logs"
       );
       const response2 = await axios.get<LogEntry[]>(
-        "https://ej02.onrender.com/api/logs"
+        "https://ejs2-0bj8.onrender.com/api/logs"
       );
       const data1 = response1.data;
       const data2 = response2.data;
@@ -127,6 +130,7 @@ const Inicio = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("jwtToken");
+    navigate("/login");
   };
 
   useEffect(() => {

@@ -23,7 +23,7 @@ const Login = () => {
     setError("");
     try {
       if (isOtp) {
-        const response = await axios.post("http://localhost:5001/api/login", {
+        const response = await axios.post("https://ej02.onrender.com/api/login", {
           email,
           token: otp,
         });
@@ -35,7 +35,7 @@ const Login = () => {
           setError("OTP inválido. Inténtalo de nuevo.");
         }
       } else {
-        const response = await axios.post("http://localhost:5001/api/login", {
+        const response = await axios.post("https://ejs2-0bj8.onrender.com/api/login", {
           email,
           password,
         });
