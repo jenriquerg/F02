@@ -39,3 +39,21 @@
 .read-the-docs {
   color: #888;
 }
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo {
+  width: 100px; /* Ajusta según el tamaño de tus imágenes */
+  height: auto;
+  transition: transform 0.3s ease-in-out;
+  filter: drop-shadow(0 0 10px rgba(173, 216, 230, 0.8));
+}
+
+.logo:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 20px rgba(0, 255, 255, 1));
+}
