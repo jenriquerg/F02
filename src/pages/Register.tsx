@@ -28,16 +28,9 @@ const Register = () => {
     });
   };
 
-  const [isOtpValid, setIsOtpValid] = useState(false);
-
-const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const value = e.target.value;
-  if (/^\d{0,6}$/.test(value)) {
-    setOtp(value);
-    setIsOtpValid(value.length === 6);
-  }
-};
-
+  const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOtp(e.target.value);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -183,7 +176,7 @@ const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               onChange={handleOtpChange}
               required
             />
-            <button onClick={handleVerifyOtp} className="btn btn-success w-100" disabled={!isOtpValid}>
+            <button onClick={handleVerifyOtp} className="btn btn-success w-100">
               Validar OTP
             </button>
           </div>

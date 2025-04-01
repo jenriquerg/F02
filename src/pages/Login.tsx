@@ -9,24 +9,13 @@ const Login = () => {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [isOtp, setIsOtp] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const [isOtpValid, setIsOtpValid] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
-    if (name === "email") {
-      setEmail(value);
-    } else if (name === "password") {
-      setPassword(value);
-    } else if (name === "otp") {
-      if (/^\d{0,6}$/.test(value)) {
-        // Asegura que solo haya números y máximo 6 caracteres
-        setOtp(value);
-        setIsOtpValid(value.length === 6);
-      }
-    }
+    if (name === "email") setEmail(value);
+    else if (name === "password") setPassword(value);
+    else if (name === "otp") setOtp(value);
   };
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
@@ -34,13 +23,10 @@ const Login = () => {
     setError("");
     try {
       if (isOtp) {
-        const response = await axios.post(
-          "https://ej02.onrender.com/api/login",
-          {
-            email,
-            token: otp,
-          }
-        );
+        const response = await axios.post("https://ej02.onrender.com/api/login", {
+          email,
+          token: otp,
+        });
 
         if (response.data.success) {
           localStorage.setItem("jwtToken", response.data.token);
@@ -49,13 +35,10 @@ const Login = () => {
           setError("OTP inválido. Inténtalo de nuevo.");
         }
       } else {
-        const response = await axios.post(
-          "https://ejs2-0bj8.onrender.com/api/login",
-          {
-            email,
-            password,
-          }
-        );
+        const response = await axios.post("https://ejs2-0bj8.onrender.com/api/login", {
+          email,
+          password,
+        });
 
         if (response.data.success) {
           localStorage.setItem("jwtToken", response.data.token);
@@ -73,10 +56,7 @@ const Login = () => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 vw-100 bg-dark">
       <div className="container w-25">
-        <form
-          onSubmit={handleLoginSubmit}
-          className="p-4 border rounded shadow-sm bg-white"
-        >
+        <form onSubmit={handleLoginSubmit} className="p-4 border rounded shadow-sm bg-white">
           <h2 className="mb-4 text-center">Iniciar sesión</h2>
           {error && <div className="alert alert-danger">{error}</div>}
           <div className="mb-3">
@@ -106,32 +86,19 @@ const Login = () => {
           ) : (
             <div className="mb-3">
               <label className="form-label">Contraseña</label>
-              <div className="input-group">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  className="form-control"
-                  value={password}
-                  onChange={handleChange}
-                  required
-                />
-                <button
-                  type="button"
-                  className="btn btn-outline-secondary"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? "🙈" : "👁️"}
-                </button>
-              </div>
+              <input
+                type="password"
+                name="password"
+                className="form-control"
+                value={password}
+                onChange={handleChange}
+                required
+              />
             </div>
           )}
 
           <div className="mb-3">
-            <button
-              type="submit"
-              className="btn btn-primary w-100"
-              disabled={isOtp && !isOtpValid}
-            >
+            <button type="submit" className="btn btn-primary w-100">
               Iniciar sesión
             </button>
           </div>
