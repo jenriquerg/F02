@@ -2,7 +2,15 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend, Title} from "chart.js";
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+  Title,
+} from "chart.js";
 import { IconRefresh, IconHome, IconLogout2 } from "@tabler/icons-react";
 
 ChartJS.register(
@@ -37,7 +45,9 @@ interface ChartData {
 const Logs = () => {
   const [chartData1, setChartData1] = useState<ChartData | null>(null);
   const [chartData2, setChartData2] = useState<ChartData | null>(null);
-  const [groupBy, setGroupBy] = useState<"status" | "logLevel">("status");
+  const [groupBy, setGroupBy] = useState<
+    "status" | "logLevel" | "method" | "responseTime"
+  >("status");
   const [totalCount1, setTotalCount1] = useState<number>(0);
   const [totalCount2, setTotalCount2] = useState<number>(0);
   const [logData1, setLogData1] = useState<LogEntry[]>([]);
@@ -72,11 +82,19 @@ const Logs = () => {
   const reorganizeData = (
     logData: LogEntry[],
     setChartData: (data: ChartData) => void,
-    groupBy: "status" | "logLevel"
+    groupBy: "status" | "logLevel" | "method" | "responseTime"
   ) => {
     const countBy: Record<string, number> = logData.reduce(
       (acc: Record<string, number>, log: LogEntry) => {
-        const key = String(log[groupBy] || "Desconocido");
+        let key: string;
+
+        if (groupBy === "responseTime") {
+          key = `${Math.floor(Number(log.responseTime) / 100) * 100}ms`;
+        } else if (groupBy === "method") {
+          key = log.method ? String(log.method).toUpperCase() : "Desconocido";
+        } else {
+          key = String(log[groupBy] || "Desconocido");
+        }
         acc[key] = (acc[key] || 0) + 1;
         return acc;
       },
@@ -92,11 +110,19 @@ const Logs = () => {
           : label === "500"
           ? "#e74c3c"
           : "#f39c12"
-        : label.toUpperCase() === "INFO"
-        ? "#2ecc71"
-        : label.toUpperCase() === "ERROR"
-        ? "#e74c3c"
-        : "#3498db"
+        : groupBy === "logLevel"
+        ? label.toUpperCase() === "INFO"
+          ? "#2ecc71"
+          : label.toUpperCase() === "ERROR"
+          ? "#e74c3c"
+          : "#3498db"
+        : groupBy === "method"
+        ? label === "GET"
+          ? "#1abc9c"
+          : label === "POST"
+          ? "#f39c12"
+          : "#9b59b6"
+        : "#34495e"
     );
 
     setChartData({
@@ -125,7 +151,11 @@ const Logs = () => {
 
   // Cambiar la agrupación (solo reorganiza los datos)
   const handleGroupByChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newGroupBy = e.target.value as "status" | "logLevel";
+    const newGroupBy = e.target.value as
+      | "status"
+      | "logLevel"
+      | "method"
+      | "responseTime";
     setGroupBy(newGroupBy);
     reorganizeData(logData1, setChartData1, newGroupBy);
     reorganizeData(logData2, setChartData2, newGroupBy);
@@ -154,6 +184,8 @@ const Logs = () => {
           >
             <option value="status">Status HTTP</option>
             <option value="logLevel">Nivel de Log</option>
+            <option value="method">Método HTTP</option>
+            <option value="responseTime">Tiempo de Respuesta</option>
           </select>
         </div>
 
@@ -181,12 +213,20 @@ const Logs = () => {
         </div>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", position: "fixed", bottom: "30px", right: "30px", zIndex: 1000 }}>
-
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          position: "fixed",
+          bottom: "30px",
+          right: "30px",
+          zIndex: 1000,
+        }}
+      >
         <button onClick={goToInicio} className="btn btn-secondary mb-2">
           <IconHome style={{ color: "white" }} stroke={2} />
         </button>
-        
+
         <button onClick={handleUpdateData} className="btn btn-primary mb-2">
           <IconRefresh style={{ color: "white" }} stroke={2} />
         </button>

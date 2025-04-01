@@ -43,31 +43,11 @@ const Inicio = () => {
       <h1 className="text-center text-white">
         Bienvenido a la página de inicio
       </h1>
-      <p className="text-center text-white">
-        Bienvenido a la Plataforma de Gestión y Monitoreo de APIs
-      </p>
-      <p className="text-justify text-white">
-        Esta aplicación permite gestionar y analizar el uso de dos servidores
-        RESTful, diseñados para autenticar usuarios mediante JWT con
-        autenticación multifactor (MFA), almacenar registros detallados de
-        actividad (logs) y evaluar la seguridad y eficiencia del sistema.
-      </p>
-      <p className="text-justify text-white">
-        <strong>Funciones principales:</strong>
-      </p>
-      <p className="text-justify text-white">
-        Registro y autenticación segura con MFA, consulta de información sobre
-        la versión del servidor y datos del usuario, registro detallado de logs
-        con análisis gráfico, comparación entre un servidor con restricciones de
-        seguridad (Rate Limit) y otro sin ellas. Puedes acceder al registro de
-        actividad en la sección de Logs, donde se presentan gráficos
-        comparativos entre los dos servidores.
-      </p>
       {userData && (
-        <div className="text-white text-center">
+        <div className="text-white text-justify p-3 w-75">
           {userData.grado && (
             <p>
-              <strong>{userData.grado} </strong> {userData.username}
+              {userData.grado} {userData.username}
             </p>
           )}
           {userData.grupo && (
@@ -77,13 +57,43 @@ const Inicio = () => {
           )}
         </div>
       )}
+      <div className="text-justify text-white mb-4 p-3 w-75">
+        <p>
+          <strong>Bienvenido a la Plataforma de Gestión y Monitoreo de APIs</strong>
+        </p>
+        <p>
+          Esta aplicación permite gestionar y analizar el uso de dos servidores
+          RESTful, diseñados para autenticar usuarios mediante JWT con
+          autenticación multifactor (MFA), almacenar registros detallados de
+          actividad (logs) y evaluar la seguridad y eficiencia del sistema.
+        </p>
+        <p>
+          <strong>Funciones principales:</strong>
+        </p>
+        <p>
+          Registro y autenticación segura con MFA, consulta de información sobre
+          la versión del servidor y datos del usuario, registro detallado de
+          logs con análisis gráfico, comparación entre un servidor con
+          restricciones de seguridad (Rate Limit) y otro sin ellas. Puedes
+          acceder al registro de actividad en la sección de Logs, donde se
+          presentan gráficos comparativos entre los dos servidores.
+        </p>
+      </div>
       <button className="btn btn-primary" onClick={goToLogs}>
         Ir a Logs
       </button>
 
-      <div className="logo-container">
-        <img src="../../public/vite.svg" alt="Vite Logo" className="logo" />
-        <img src="../assets/react.svg" alt="React Logo" className="logo" />
+      <div style={{ marginTop: "60px" }}>
+        <img
+          src="/vite.svg"
+          alt="Vite Logo"
+          style={{ marginRight: "20px", width: "100px" }}
+        />
+        <img
+          src="/react.svg"
+          alt="React Logo"
+          style={{ marginRight: "20px", width: "100px" }}
+        />
       </div>
 
       <div
