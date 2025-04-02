@@ -12,6 +12,7 @@ import {
   Title,
 } from "chart.js";
 import { IconRefresh, IconHome, IconLogout2 } from "@tabler/icons-react";
+import { useAuth } from "../hooks/useAuth";
 
 ChartJS.register(
   BarElement,
@@ -55,14 +56,21 @@ const Logs = () => {
 
   const navigate = useNavigate();
 
+  useAuth();
+
   // Obtener los datos de la API una sola vez al montar el componente
   const getData = useCallback(async () => {
+    const token = localStorage.getItem("jwtToken");
     try {
       const response1 = await axios.get<LogEntry[]>(
-        "https://ej02.onrender.com/api/logs"
+        "https://ej02.onrender.com/api/logs",{
+          headers: { Authorization: `Bearer ${token}` }
+        }
       );
       const response2 = await axios.get<LogEntry[]>(
-        "https://ejs2-0bj8.onrender.com/api/logs"
+        "https://ejs2-0bj8.onrender.com/api/logs", {
+          headers: { Authorization: `Bearer ${token}` }
+        }
       );
       const data1 = response1.data;
       const data2 = response2.data;
@@ -189,9 +197,8 @@ const Logs = () => {
           </select>
         </div>
 
-        <div className="text-white d-flex flex-row justify-content-between">
-          <p>Total de registros servidor 5001: {totalCount1}</p>
-          <p>Total de registros servidor 5002: {totalCount2}</p>
+        <div className="text-white d-flex">
+          <p>Total de registros servidor con rate limit: {totalCount1}</p>
         </div>
 
         <h2 className="text-white">Servidor 1 - con rate limit</h2>
@@ -201,6 +208,10 @@ const Logs = () => {
           ) : (
             <p className="text-white">Cargando...</p>
           )}
+        </div>
+
+        <div className="text-white d-flex">
+          <p>Total de registros servidor sin rate limit: {totalCount2}</p>
         </div>
 
         <h2 className="text-white">Servidor 2 - sin rate limit</h2>

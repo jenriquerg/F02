@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { IconLogout2 } from "@tabler/icons-react";
-import { jwtDecode } from "jwt-decode";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 interface UserData {
   grado?: string;
@@ -13,21 +13,7 @@ const Inicio = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState<UserData | null>(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem("jwtToken");
-    if (token) {
-      try {
-        const decoded = jwtDecode<UserData>(token);
-        setUserData(decoded);
-      } catch (error) {
-        console.error("Error al decodificar el token", error);
-        localStorage.removeItem("jwtToken");
-        navigate("/login");
-      }
-    } else {
-      navigate("/login");
-    }
-  }, [navigate]);
+  useAuth(setUserData); // ✅ Esto ya maneja la autenticación y navegación
 
   const goToLogs = () => {
     navigate("/logs");
